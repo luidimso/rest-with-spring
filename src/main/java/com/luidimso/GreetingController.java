@@ -21,7 +21,7 @@ public class GreetingController {
 	}
 	
 	@GetMapping("/sum/{n1}/{n2}")
-	public Double sum(@PathVariable(value = "n1") String n1, @PathVariable(value = "n1") String n2) throws Exception {
+	public Double sum(@PathVariable(value = "n1") String n1, @PathVariable(value = "n2") String n2) throws Exception {
 		if(!isNumeric(n1) || !isNumeric(n2)) {
 			throw new Exception();
 		}
@@ -32,11 +32,27 @@ public class GreetingController {
 	
 	
 	public boolean isNumeric(String number) {
-		return false;
+		if(number == null) {
+			return false;
+		}
+		
+		String n = number.replaceAll(",", ".");
+		
+		return n.matches("[-+]?[0-9]*\\.?[0-9]+");
 	}
 	
 	public Double convertToDouble(String number) {
-		return null;
+		if(number == null) {
+			return 0D;
+		}
+		
+		String n = number.replaceAll(",", ".");
+		
+		if(isNumeric(n)) {
+			return Double.parseDouble(n);
+		}
+		
+		return 0D;
 	}
 		
 }
