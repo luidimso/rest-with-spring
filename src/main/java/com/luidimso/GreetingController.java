@@ -21,9 +21,22 @@ public class GreetingController {
 	}
 	
 	@GetMapping("/sum/{n1}/{n2}")
-	public Double sum(@PathVariable(value = "n1") String n1, @PathVariable(value = "n1") String n2) {
-		return 1D;
+	public Double sum(@PathVariable(value = "n1") String n1, @PathVariable(value = "n1") String n2) throws Exception {
+		if(!isNumeric(n1) || !isNumeric(n2)) {
+			throw new Exception();
+		}
 		
+		return convertToDouble(n1) + convertToDouble(n2);
+		
+	}
+	
+	
+	public boolean isNumeric(String number) {
+		return false;
+	}
+	
+	public Double convertToDouble(String number) {
+		return null;
 	}
 		
 }
