@@ -1,5 +1,7 @@
 package com.luidimso;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,6 @@ import com.luidimso.exceptions.UnsupportedMathOperationExperation;
 import com.luidimso.model.Person;
 import com.luidimso.service.PersonService;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @RestController
 @RequestMapping("/person")
 public class PersonController {
@@ -23,6 +23,11 @@ public class PersonController {
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Person findById(@PathVariable(value = "id") String id) throws Exception {
 		return service.findById(id);
+	}
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Person> findAll() throws Exception {
+		return service.findAll();
 	}
 		
 }
