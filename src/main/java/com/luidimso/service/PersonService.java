@@ -17,7 +17,7 @@ public class PersonService {
 ;
 	private Logger logger = Logger.getLogger(PersonService.class.getName());
 	
-	@Autowired
+	@Autowired(required = false)
 	PersonRepository repository;
 	
 	public Person findById(Long id) {
