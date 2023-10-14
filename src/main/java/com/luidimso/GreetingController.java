@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.luidimso.exceptions.UnsupportedMathOperationExperation;
+import com.luidimso.exceptions.ResourceNotFoundException;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,7 +26,7 @@ public class GreetingController {
 	@GetMapping("/sum/{n1}/{n2}")
 	public Double sum(@PathVariable(value = "n1") String n1, @PathVariable(value = "n2") String n2) throws Exception {
 		if(!isNumeric(n1) || !isNumeric(n2)) {
-			throw new UnsupportedMathOperationExperation("Please, insert a numeric number");
+			throw new ResourceNotFoundException("Please, insert a numeric number");
 		}
 		
 		return convertToDouble(n1) + convertToDouble(n2);
