@@ -2,8 +2,8 @@
 spring:
   datasource:
     dbcp2:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/curso?useTimezone=true&serverTimezone=UTC
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/curso
       username: root
       
   jpa:
