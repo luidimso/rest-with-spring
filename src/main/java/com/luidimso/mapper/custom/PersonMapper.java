@@ -19,20 +19,19 @@ public class PersonMapper {
 		entityVo.setId(person.getId());
 		entityVo.setLastName(person.getLastName());
 		
-		return null;
+		return entityVo;
 	}
 	
 	
 	public Person convertVOToEntity(PersonVOV2 person) {
-		PersonVOV2 entity = new PersonVOV2();
+		Person entity = new Person();
 		
 		entity.setAddress(person.getAddress());
-		entity.setBirthDay(new Date());
 		entity.setFirstName(person.getFirstName());
 		entity.setGender(person.getGender());
 		entity.setId(person.getId());
 		entity.setLastName(person.getLastName());
 		
-		return null;
+		return entity;
 	}
 }

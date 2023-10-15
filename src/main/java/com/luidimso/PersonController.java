@@ -19,7 +19,7 @@ import com.luidimso.data.vo.v2.PersonVOV2;
 import com.luidimso.service.PersonService;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
 	@Autowired
 	private PersonService service;
