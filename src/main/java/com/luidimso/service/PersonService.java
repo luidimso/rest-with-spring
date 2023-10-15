@@ -1,15 +1,15 @@
 package com.luidimso.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.luidimso.data.vo.v1.PersonVO;
 import com.luidimso.exceptions.ResourceNotFoundException;
 import com.luidimso.interfaces.PersonRepository;
+import com.luidimso.mapper.DozerMapper;
 import com.luidimso.model.Person;
 
 @Service
@@ -20,27 +20,33 @@ public class PersonService {
 	@Autowired
 	PersonRepository repository;
 	
-	public Person findById(Long id) {
+	public PersonVO findById(Long id) {
 		logger.info("Finding a person");
 
 		
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		
+		return DozerMapper.parseObjact(entity, PersonVO.class);
 	}
 	
-	public List<Person> findAll() {
+	public List<PersonVO> findAll() {
 		logger.info("Finding all people");
 
 		
-		return repository.findAll();
+		return DozerMapper.parseListObjacts(repository.findAll(), PersonVO.class);
 	}
 	
 	
-	public Person create(Person person) {
+	public PersonVO create(PersonVO person) {
 		logger.info("Creating a person");
-		return repository.save(person);
+		
+		var entity = DozerMapper.parseObjact(person, Person.class);
+		var entityVo =  DozerMapper.parseObjact(repository.save(entity), PersonVO.class);
+		
+		return entityVo;
 	}
 	
-	public Person update(Person person) {
+	public PersonVO update(PersonVO person) {
 		logger.info("Updating a person");
 		
 		var entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
@@ -50,7 +56,9 @@ public class PersonService {
 		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
 		
-		return person;
+		var entityVo =  DozerMapper.parseObjact(repository.save(entity), PersonVO.class);
+		
+		return entityVo;
 	}
 
 	

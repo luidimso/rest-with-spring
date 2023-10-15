@@ -1,6 +1,5 @@
 package com.luidimso.interfaces;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.luidimso.model.Person;
