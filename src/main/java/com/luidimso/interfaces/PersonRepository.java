@@ -8,7 +8,6 @@ import com.luidimso.model.Person;
 import org.springframework.data.jpa.repository.*;
 
 @Repository
-@Component
 public interface PersonRepository extends JpaRepository<Person, Long>{
 
 }
