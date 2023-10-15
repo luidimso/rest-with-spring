@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luidimso.data.vo.v1.PersonVO;
+import com.luidimso.data.vo.v2.PersonVOV2;
 import com.luidimso.exceptions.ResourceNotFoundException;
 import com.luidimso.interfaces.PersonRepository;
 import com.luidimso.mapper.DozerMapper;
@@ -42,6 +43,15 @@ public class PersonService {
 		
 		var entity = DozerMapper.parseObjact(person, Person.class);
 		var entityVo =  DozerMapper.parseObjact(repository.save(entity), PersonVO.class);
+		
+		return entityVo;
+	}
+	
+	public PersonVOV2 createV2(PersonVOV2 person) {
+		logger.info("Creating a person on version 2");
+		
+		var entity = DozerMapper.parseObjact(person, Person.class);
+		var entityVo =  DozerMapper.parseObjact(repository.save(entity), PersonVOV2.class);
 		
 		return entityVo;
 	}
