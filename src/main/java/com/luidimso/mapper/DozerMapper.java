@@ -9,6 +9,8 @@ import com.github.dozermapper.core.Mapper;
 public class DozerMapper {
 	private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 	
+	// For the newest versions, the dependency ModelMapper can be used instead of DozerMapper
+	
 	public static <O, D> D parseObjact(O origin, Class<D> destination) {
 		return mapper.map(origin, destination);
 	}
