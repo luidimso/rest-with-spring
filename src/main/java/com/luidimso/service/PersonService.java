@@ -11,6 +11,7 @@ import com.luidimso.data.vo.v2.PersonVOV2;
 import com.luidimso.exceptions.ResourceNotFoundException;
 import com.luidimso.interfaces.PersonRepository;
 import com.luidimso.mapper.DozerMapper;
+import com.luidimso.mapper.custom.PersonMapper;
 import com.luidimso.model.Person;
 
 @Service
@@ -20,6 +21,9 @@ public class PersonService {
 	
 	@Autowired
 	PersonRepository repository;
+	
+	@Autowired
+	PersonMapper mapper;
 	
 	public PersonVO findById(Long id) {
 		logger.info("Finding a person");
@@ -50,8 +54,8 @@ public class PersonService {
 	public PersonVOV2 createV2(PersonVOV2 person) {
 		logger.info("Creating a person on version 2");
 		
-		var entity = DozerMapper.parseObjact(person, Person.class);
-		var entityVo =  DozerMapper.parseObjact(repository.save(entity), PersonVOV2.class);
+		var entity = mapper.convertVOToEntity(person);
+		var entityVo =  mapper.convertEntityToVo(repository.save(entity));
 		
 		return entityVo;
 	}
