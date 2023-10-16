@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.luidimso.PersonController;
 import com.luidimso.data.vo.v1.PersonVO;
 import com.luidimso.data.vo.v2.PersonVOV2;
 import com.luidimso.exceptions.ResourceNotFoundException;
@@ -14,6 +15,8 @@ import com.luidimso.mapper.DozerMapper;
 import com.luidimso.mapper.custom.PersonMapper;
 import com.luidimso.model.Person;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class PersonService {
 ;
@@ -31,7 +34,15 @@ public class PersonService {
 		
 		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 		
-		return DozerMapper.parseObjact(entity, PersonVO.class);
+		PersonVO personVo = DozerMapper.parseObjact(entity, PersonVO.class);
+		
+		try {
+			personVo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return personVo;
 	}
 	
 	public List<PersonVO> findAll() {
@@ -63,7 +74,7 @@ public class PersonService {
 	public PersonVO update(PersonVO person) {
 		logger.info("Updating a person");
 		
-		var entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		var entity = repository.findById(person.getKey()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 		
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
