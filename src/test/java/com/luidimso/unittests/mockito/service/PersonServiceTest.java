@@ -1,8 +1,10 @@
 package com.luidimso.unittests.mockito.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -57,10 +59,16 @@ class PersonServiceTest {
 		assertEquals("Male", result.getGender());	
 	}	
 	
-//	@Test
-//	void testFindAll() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	void testFindAll() {
+		List<Person> list = input.mockEntityList();
+		
+		when(repository.findAll()).thenReturn(list);
+		
+		var result = service.findAll();
+		
+		assertThat((list.size() > 0));
+	}
 //
 	@Test
 	void testCreate() {
