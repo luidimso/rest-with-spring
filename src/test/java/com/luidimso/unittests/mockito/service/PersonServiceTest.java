@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.luidimso.data.vo.v1.PersonVO;
+import com.luidimso.exceptions.RequiredObjectIsNullException;
 import com.luidimso.interfaces.PersonRepository;
 import com.luidimso.model.Person;
 import com.luidimso.service.PersonService;
@@ -84,6 +85,30 @@ class PersonServiceTest {
 		assertEquals("First Name Test0", result.getFirstName());
 		assertEquals("Male", result.getGender());	
 		
+	}
+	
+	@Test
+	void testCreateWithNullValue() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.create(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object";
+		String actualMessage = exception.getMessage();
+		
+		assertEquals(actualMessage, expectedMessage);
+	}
+	
+	@Test
+	void testUpdateWithNullValue() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.update(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object";
+		String actualMessage = exception.getMessage();
+		
+		assertEquals(actualMessage, expectedMessage);
 	}
 //
 //	@Test
