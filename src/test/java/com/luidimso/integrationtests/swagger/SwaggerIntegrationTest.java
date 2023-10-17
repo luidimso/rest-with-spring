@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.luidimso.config.TestConfigs;
+import com.luidimso.configs.TestConfigs;
 import com.luidimso.integrationtests.testescontainers.AbstractIntegrationTest;
 
 import static io.restassured.RestAssured.given;
