@@ -6,7 +6,7 @@ import java.util.List;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 
-public class DozerMapper {
+public class DozerMapperr {
 	private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 	
 	// For the newest versions, the dependency ModelMapper can be used instead of DozerMapper
