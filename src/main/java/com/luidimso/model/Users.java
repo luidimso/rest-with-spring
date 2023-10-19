@@ -53,7 +53,7 @@ private static final long serialVersionUID = 1L;
 	private Boolean enabled;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_permission", joinColumns = {
+	@JoinTable(name = "id_permission", joinColumns = {
 			@JoinColumn(name = "id_user", referencedColumnName = "id_permission")
 	})
 	private List<Permission> permissions;
