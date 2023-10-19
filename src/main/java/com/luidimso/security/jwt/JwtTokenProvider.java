@@ -1,4 +1,4 @@
-package com.luidimso.securityJwt;
+package com.luidimso.security.jwt;
 
 import java.util.Base64;
 import java.util.Date;
