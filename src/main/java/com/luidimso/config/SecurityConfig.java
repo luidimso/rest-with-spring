@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,9 +20,8 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.luidimso.security.jwt.JwtConfigurer;
 import com.luidimso.security.jwt.JwtTokenProvider;
-
+import com.luidimso.security.jwt.JwtConfigurer;
 
 @EnableWebSecurity
 @Configuration
@@ -39,7 +40,7 @@ public class SecurityConfig {
 		passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder);
 		return passwordEncoder;
 	}
-	  
+	
     @Bean
     AuthenticationManager authenticationManagerBean(
     		AuthenticationConfiguration authenticationConfiguration)

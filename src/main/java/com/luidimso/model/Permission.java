@@ -20,6 +20,7 @@ private static final long serialVersionUID = 1L;
 	public Permission() {}
 	
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	

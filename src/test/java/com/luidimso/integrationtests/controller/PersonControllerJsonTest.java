@@ -30,7 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 
 @TestMethodOrder(OrderAnnotation.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest()
 public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	
 	private static RequestSpecification specification;

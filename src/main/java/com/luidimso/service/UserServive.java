@@ -27,7 +27,7 @@ public class UserServive implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("Finding a user by name: " + username);
 		
-		var user = repository.findByUserName(username);
+		var user = repository.findByUsername(username);
 		
 		if(user != null) {
 			return user;

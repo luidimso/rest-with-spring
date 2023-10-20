@@ -10,5 +10,5 @@ import com.luidimso.model.Users;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long>{
 	@Query("SELECT u FROM Users u WHERE u.userName =:userName")
-	Users findByUserName(@Param("userName") String userName);
+	Users findByUsername(@Param("userName") String userName);
 }

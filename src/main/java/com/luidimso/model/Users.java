@@ -28,6 +28,7 @@ private static final long serialVersionUID = 1L;
 	public Users() {}
 	
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -53,9 +54,7 @@ private static final long serialVersionUID = 1L;
 	private Boolean enabled;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "id_permission", joinColumns = {
-			@JoinColumn(name = "id_user", referencedColumnName = "id_permission")
-	})
+	@JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_permission"))
 	private List<Permission> permissions;
 	
 	public List<String> getRoles() {

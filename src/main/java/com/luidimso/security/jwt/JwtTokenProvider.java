@@ -25,10 +25,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class JwtTokenProvider {
-	@Value("${security.jwt:.token.secret-key:secret}")
+	@Value("${security.jwt.token.secret-key:secret}")
 	private String secretKey = "secret";
 	
-	@Value("${security.jwt:.token.expire-length:3600000}")
+	@Value("${security.jwt.token.expire-length:3600000}")
 	private long validity = 3600000;
 	
 	@Autowired
@@ -84,9 +84,9 @@ public class JwtTokenProvider {
 	}
 	
 	public boolean validateToken(String token) {
-		DecodedJWT decodedJwt = decodedToken(token);
-		
 		try {
+			DecodedJWT decodedJwt = decodedToken(token);
+			
 			if(decodedJwt.getExpiresAt().before(new Date())) {
 				return false;
 			}

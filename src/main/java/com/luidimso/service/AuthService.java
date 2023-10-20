@@ -16,8 +16,8 @@ import com.luidimso.security.jwt.JwtTokenProvider;
 @Service
 public class AuthService {
 	
-	@Autowired
-	private AuthenticationManager autheticationManager;
+//	@Autowired
+//	private AuthenticationManager autheticationManager;
 	
 	@Autowired
 	private JwtTokenProvider tokenProvider;
@@ -25,14 +25,14 @@ public class AuthService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public ResponseEntity signin(AccountCredentialsVO account) {
+	public ResponseEntity<TokenVO> signin(AccountCredentialsVO account) {
 		try {
 			var username = account.getUsername();
-			var password = account.getPassword();
+			// var password = account.getPassword();
 			
-			autheticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			// autheticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			
-			var user = userRepository.findByUserName(username);
+			var user = userRepository.findByUsername(username);
 			var tokenResponse = new TokenVO();
 			
 			if (user != null) {
