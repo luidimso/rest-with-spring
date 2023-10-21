@@ -8,12 +8,15 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonParseException;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonMappingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.luidimo.integrationtests.vo.PersonVO;
 import com.luidimso.configs.TestConfigs;
+import com.luidimso.data.vo.v1.security.AccountCredentialsVO;
+import com.luidimso.data.vo.v1.security.TokenVO;
 import com.luidimso.integrationtests.testescontainers.AbstractIntegrationTest;
 
 import io.restassured.builder.RequestSpecBuilder;
@@ -30,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 
 @TestMethodOrder(OrderAnnotation.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@SpringBootTest()
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest()
 public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	
 	private static RequestSpecification specification;
@@ -50,21 +53,42 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	}
 	
 	@Test
+	@Order(0)
+	public void authorization() throws JsonMappingException, JsonProcessingException {
+		AccountCredentialsVO user = new AccountCredentialsVO("leandro", "admin123");
+		
+		var accessToken = given()
+						.basePath("/auth/signin")
+						.port(port)
+						.contentType(TestConfigs.CONTENT_TYPE_JSON)
+						.body(user)
+						.when()
+						.post()
+						.then()
+						.statusCode(200)
+						.extract()
+						.body()
+						.as(TokenVO.class)
+						.getAccessToken();
+		
+		specification = new RequestSpecBuilder()
+				.addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer "+accessToken)
+				.setBasePath("/api/person/v1")
+				.setPort(port)
+				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+				.build();
+	}
+	
+	@Test
 	@Order(1)
 	public void testCreate() throws JsonParseException, JsonMappingException, IOException {
 		mockPerson();
 		
-		specification = new RequestSpecBuilder()
-							.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.RIGHT_ORIGIN)
-							.setBasePath("/api/person/v1")
-							.setPort(port)
-							.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-							.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-							.build();
-		
 		var content = given()
 				.spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.RIGHT_ORIGIN)
 				.body(person)
 				.port(port)
 				.when()
@@ -90,17 +114,10 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	public void testCreateWithWrongOrigin() throws JsonParseException, JsonMappingException, IOException {
 		mockPerson();
 		
-		specification = new RequestSpecBuilder()
-							.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.WRONG_ORIGIN)
-							.setBasePath("/api/person/v1")
-							.setPort(port)
-							.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-							.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-							.build();
-		
 		var content = given()
 				.spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.WRONG_ORIGIN)
 				.body(person)
 				.port(port)
 				.when()
