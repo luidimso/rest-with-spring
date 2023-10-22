@@ -26,6 +26,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -133,47 +134,69 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	}
 	
 	
-//	@Test
-//	@Order(2)
-//	public void testGetAPerson() throws JsonParseException, JsonMappingException, IOException {
-//		mockPerson();
-//		
-//		specification = new RequestSpecBuilder()
-//							.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.RIGHT_ORIGIN)
-//							.setBasePath("/api/person/v1")
-//							.setPort(port)
-//							.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-//							.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-//							.build();
-//		
-//		var content = given()
-//				.spec(specification)
-//				.contentType(TestConfigs.CONTENT_TYPE_JSON)
-//				.pathParam("id", person.getId())
-//				.port(port)
-//				.when()
-//				.get("{id}")
-//				.then()
-//				.statusCode(200)
-//				.extract()
-//				.body()
-//				.asString();
-//		
-//		PersonVO returnedPerson = objectMapper.readValue(content, PersonVO.class);
-//		
-//		assertNotNull(returnedPerson);
-//		assertTrue(returnedPerson.getId() > 0);
-//		assertEquals(returnedPerson.getFirstName(), person.getFirstName());
-//		assertEquals(returnedPerson.getLastName(), person.getLastName());
-//		assertEquals(returnedPerson.getAddress(), person.getAddress());
-//		assertEquals(returnedPerson.getGender(), person.getGender());
-//	}
+	@Test
+	@Order(2)
+	public void testGetAPerson() throws JsonParseException, JsonMappingException, IOException {
+		mockPerson();
+		
+		var content = given()
+				.spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.pathParam("id", person.getId())
+				.port(port)
+				.when()
+				.get("{id}")
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+		
+		PersonVO returnedPerson = objectMapper.readValue(content, PersonVO.class);
+		
+		assertNotNull(returnedPerson);
+		assertTrue(returnedPerson.getId() > 0);
+		assertEquals(returnedPerson.getFirstName(), person.getFirstName());
+		assertEquals(returnedPerson.getLastName(), person.getLastName());
+		assertEquals(returnedPerson.getAddress(), person.getAddress());
+		assertEquals(returnedPerson.getGender(), person.getGender());
+	}
+	
+	@Test
+	@Order(3)
+	public void testDisablePerson() throws JsonParseException, JsonMappingException, IOException {
+		mockPerson();
+		
+		var content = given()
+				.spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.pathParam("id", person.getId())
+				.port(port)
+				.when()
+				.patch("{id}")
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+		
+		PersonVO returnedPerson = objectMapper.readValue(content, PersonVO.class);
+		
+		assertNotNull(returnedPerson);
+		assertTrue(returnedPerson.getId() > 0);
+		assertEquals(returnedPerson.getFirstName(), person.getFirstName());
+		assertEquals(returnedPerson.getLastName(), person.getLastName());
+		assertEquals(returnedPerson.getAddress(), person.getAddress());
+		assertEquals(returnedPerson.getGender(), person.getGender());
+		assertFalse(returnedPerson.getEnabled());
+	}
 
 	private void mockPerson() {
 		person.setFirstName("John");
 		person.setLastName("Cena");
 		person.setAddress("United States");
 		person.setGender("Male");
+		person.setEnabled(true);
 	}
 
 }
