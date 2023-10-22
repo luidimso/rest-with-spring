@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.luidimso.PersonController;
@@ -48,11 +50,22 @@ public class PersonService {
 		return personVo;
 	}
 	
-	public List<PersonVO> findAll() {
+	public Page<PersonVO> findAll(Pageable pageable) {
 		logger.info("Finding all people");
+		
+		var peoplePage = repository.findAll(pageable);
+		var peopleVOPage = peoplePage.map(p -> DozerMapper.parseObjact(p, PersonVO.class));
+		peopleVOPage.map(p -> {
+			try {
+				return p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return p;
+		});
 
 		
-		return DozerMapper.parseListObjacts(repository.findAll(), PersonVO.class);
+		return peopleVOPage;
 	}
 	
 	
