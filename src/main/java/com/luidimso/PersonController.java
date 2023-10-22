@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -82,6 +83,20 @@ public class PersonController {
 	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) throws Exception {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	;
+	
+	// @CrossOrigin(origins = {"http://localhost:8080", "https://luidimso.com"})
+	@Operation(summary = "Disable a person", description = "Disable a person", tags = "People", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PersonVO.class))),
+			@ApiResponse(responseCode = "400", content = @Content),
+			@ApiResponse(responseCode = "401", content = @Content),
+			@ApiResponse(responseCode = "404", content = @Content),
+			@ApiResponse(responseCode = "500", content = @Content)
+	})
+	@PatchMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,  MediaType.APPLICATION_XML_VALUE })
+	public PersonVO disablePerson(@PathVariable(value = "id") Long id) throws Exception {
+		return service.disablePerson(id);
 	}
 		
 }

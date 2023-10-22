@@ -18,6 +18,7 @@ public class PersonMapper {
 		entityVo.setGender(person.getGender());
 		entityVo.setId(person.getId());
 		entityVo.setLastName(person.getLastName());
+		entityVo.setEnabled(person.getEnabled());
 		
 		return entityVo;
 	}
@@ -31,6 +32,7 @@ public class PersonMapper {
 		entity.setGender(person.getGender());
 		entity.setId(person.getId());
 		entity.setLastName(person.getLastName());
+		entity.setEnabled(person.getEnabled());
 		
 		return entity;
 	}

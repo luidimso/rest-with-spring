@@ -15,10 +15,11 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonMappingExcep
 import com.luidimso.configs.TestConfigs;
 import com.luidimso.data.vo.v1.security.AccountCredentialsVO;
 import com.luidimso.data.vo.v1.security.TokenVO;
+import com.luidimso.integrationtests.testescontainers.AbstractIntegrationTest;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthControllerTest {
+public class AuthControllerTest extends AbstractIntegrationTest {
 	private static TokenVO tokenVO;
 	
 	@LocalServerPort

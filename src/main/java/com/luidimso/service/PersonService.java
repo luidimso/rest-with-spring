@@ -16,6 +16,8 @@ import com.luidimso.mapper.DozerMapper;
 import com.luidimso.mapper.custom.PersonMapper;
 import com.luidimso.model.Person;
 
+import jakarta.transaction.Transactional;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
@@ -106,6 +108,28 @@ public class PersonService {
 		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 		
 		repository.delete(entity);
+	}
+	
+	
+	@Transactional
+	
+	public PersonVO disablePerson(Long id) {
+		
+		logger.info("Disabling a person");
+		
+		repository.disablePerson(id);
+		
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		
+		PersonVO personVo = DozerMapper.parseObjact(entity, PersonVO.class);
+		
+		try {
+			personVo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return personVo;
 	}
 
 }
