@@ -295,6 +295,35 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertTrue(content.contains("_links"));
 		assertTrue(content.contains("http://localhost"));
 	}
+	
+	
+	@Test
+	@Order(6)
+	public void testDisableAPerson() throws JsonParseException, JsonMappingException, IOException {
+		var content = given()
+				.spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.RIGHT_ORIGIN)
+				.port(port)
+				.pathParam("id", 10)
+				.when()
+				.patch("{id}")
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+		
+		person = objectMapper.readValue(content, PersonVO.class);
+		
+		assertNotNull(person);
+		assertTrue(person.getId() == 10);
+		assertEquals("Nesta", person.getFirstName());
+		assertEquals("Edinborough", person.getLastName());
+		assertEquals("64 Acker Street", person.getAddress());
+		assertEquals("Female", person.getGender());
+		assertFalse(person.getEnabled());
+	}
 
 	private void mockPerson() {
 		person.setFirstName("John");
