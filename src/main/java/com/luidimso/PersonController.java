@@ -77,6 +77,29 @@ public class PersonController {
 	}
 	
 	
+	@Operation(summary = "Finds people by name", description = "Finds all people", tags = "People", responses = {
+			@ApiResponse(responseCode = "200", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PersonVO.class)))
+			}),
+			@ApiResponse(responseCode = "400", content = @Content),
+			@ApiResponse(responseCode = "401", content = @Content),
+			@ApiResponse(responseCode = "404", content = @Content),
+			@ApiResponse(responseCode = "500", content = @Content)
+	})
+	@GetMapping(value="/findPeopleByName/{firstName}", produces ={ MediaType.APPLICATION_JSON_VALUE,  MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<PagedModel<EntityModel<PersonVO>>> findPepopleByName(
+			@PathVariable(value = "firstName") String firstName,
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "limit", defaultValue = "12") Integer limit,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction) throws Exception {
+		
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+		
+		return ResponseEntity.ok(service.findPeopleByName(firstName, pageable));
+	}
+	
+	
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE,  MediaType.APPLICATION_XML_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PersonVO create(@RequestBody PersonVO person) {
 		return service.create(person);
