@@ -14,6 +14,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonMappingExcep
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.luidimo.integrationtests.vo.PersonVO;
+import com.luidimo.integrationtests.vo.WrapperPersonVO;
 import com.luidimso.configs.TestConfigs;
 import com.luidimso.data.vo.v1.security.AccountCredentialsVO;
 import com.luidimso.data.vo.v1.security.TokenVO;
@@ -189,6 +190,47 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertEquals(returnedPerson.getAddress(), person.getAddress());
 		assertEquals(returnedPerson.getGender(), person.getGender());
 		assertFalse(returnedPerson.getEnabled());
+	}
+	
+	
+	@Test
+	@Order(4)
+	public void testFindAll() throws IOException {
+		
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.accept(TestConfigs.CONTENT_TYPE_JSON)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
+					.when()
+					.get()
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+		
+		WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+		var people = wrapper.getEmbedded().getPeople();
+		
+		PersonVO foundPersonOne = people.get(0);
+		
+		assertNotNull(foundPersonOne.getId());
+		assertNotNull(foundPersonOne.getFirstName());
+		assertNotNull(foundPersonOne.getLastName());
+		assertNotNull(foundPersonOne.getAddress());
+		assertNotNull(foundPersonOne.getGender());
+
+		assertFalse(foundPersonOne.getEnabled());
+		
+		PersonVO foundPersonSix = people.get(5);
+		
+		assertNotNull(foundPersonSix.getId());
+		assertNotNull(foundPersonSix.getFirstName());
+		assertNotNull(foundPersonSix.getLastName());
+		assertNotNull(foundPersonSix.getAddress());
+		assertNotNull(foundPersonSix.getGender());
+
+		assertTrue(foundPersonSix.getEnabled());
 	}
 
 	private void mockPerson() {
