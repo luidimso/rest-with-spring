@@ -21,6 +21,18 @@
 		<rest-assured.version>4.5.0</rest-assured.version>
 		<java-jwt.version>3.18.3</java-jwt.version>
 	</properties>
+	
+	<pluginRepositories>
+	    <pluginRepository>
+	        <id>spring-snapshots</id>
+	        <url>https://repo.spring.io/snapshot</url>
+	    </pluginRepository>
+	    <pluginRepository>
+	        <id>spring-milestones</id>
+	        <url>https://repo.spring.io/milestone</url>
+	    </pluginRepository>
+	</pluginRepositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
