@@ -6,6 +6,10 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import com.luidimso.PersonController;
@@ -33,6 +37,9 @@ public class PersonService {
 	@Autowired
 	PersonMapper mapper;
 	
+	@Autowired
+	PagedResourcesAssembler<PersonVO> assembler;
+	
 	public PersonVO findById(Long id) {
 		logger.info("Finding a person");
 
@@ -50,7 +57,7 @@ public class PersonService {
 		return personVo;
 	}
 	
-	public Page<PersonVO> findAll(Pageable pageable) {
+	public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable) throws Exception {
 		logger.info("Finding all people");
 		
 		var peoplePage = repository.findAll(pageable);
@@ -65,7 +72,9 @@ public class PersonService {
 		});
 
 		
-		return peopleVOPage;
+		Link link = linkTo(methodOn(PersonController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+		
+		return assembler.toModel(peopleVOPage, link);
 	}
 	
 	
