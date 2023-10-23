@@ -238,6 +238,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Order(5)
 	public void testFindByName() throws IOException {
 		
+		// this test returns the JSON as string, so wrapper receives this mapped as WrapperPersonVO through objectMapper
+		
 		var content = given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
 				.accept(TestConfigs.CONTENT_TYPE_JSON)
@@ -268,6 +270,30 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertEquals("Terbrug", foundPersonOne.getLastName());
 		assertEquals("3 Eagle Crest Court", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
+	}
+	
+	
+	@Test
+	@Order(5)
+	public void testHateOS() throws IOException {
+		
+		// this test returns the JSON as string, so wrapper receives this mapped as WrapperPersonVO through objectMapper
+		
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.accept(TestConfigs.CONTENT_TYPE_JSON)
+				.pathParam("firstName", "alic")
+				.queryParams("page", 0, "size", 10, "direction", "asc")
+					.when()
+					.get("findPeopleByName/{firstName}")
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+		
+		assertTrue(content.contains("_links"));
+		assertTrue(content.contains("http://localhost"));
 	}
 
 	private void mockPerson() {

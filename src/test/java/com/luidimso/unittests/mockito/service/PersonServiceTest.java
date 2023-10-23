@@ -57,18 +57,7 @@ class PersonServiceTest {
 		assertEquals("Addres Test0", result.getAddress());
 		assertEquals("First Name Test0", result.getFirstName());
 		assertEquals("Male", result.getGender());	
-	}	
-	
-//	@Test
-//	void testFindAll() {
-//		List<Person> list = input.mockEntityList();
-//		
-//		when(repository.findAll()).thenReturn(list);
-//		
-//		var result = service.findAll();
-//		
-//		assertThat((list.size() > 0));
-//	}
+	}
 //
 	@Test
 	void testCreate() {
