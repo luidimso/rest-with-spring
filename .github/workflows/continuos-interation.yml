@@ -36,7 +36,7 @@ jobs:
     - name: Push to docker hub container
       run: |
         docker tag ${{ secrets.DOCKER_USERNAME }}/rest-with-springboot-2:latest ${{ secrets.DOCKER_USERNAME }}/rest-with-springboot-2:${{ github.run_id }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-springboot-2:${{ githun.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-springboot-2:${{ github.run_id }}
         docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-springboot-2:latest
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
