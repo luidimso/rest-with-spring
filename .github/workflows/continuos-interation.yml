@@ -26,11 +26,9 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      working-directory: ./rest-with-springboot-2
       run: mvn clean package
 
     - name: Docker with compose
-      working-directory: ./rest-with-springboot-2
       run: docker compose build
 
     - name: Push to docker hub container
