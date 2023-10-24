@@ -19,7 +19,7 @@ services:
     networks:
       -  luidi-network
   curso:
-    image: repository/rest-with-springboot-2
+    image: luidimso/rest-with-springboot-2
     restart: always
     build: ./rest-with-springboot-2
     working_dir: /rest-with-springboot-2
