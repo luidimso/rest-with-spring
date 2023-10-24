@@ -21,7 +21,7 @@ services:
   curso:
     image: luidimso/rest-with-springboot-2
     restart: always
-    build: ./
+    build: ./rest-with-springboot-2
     working_dir: /rest-with-springboot-2
     environment:
       TZ: America/Sao_Paulo
